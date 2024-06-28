@@ -1,6 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define int long long
+#define vi vector<int>
+#define vvi vector<vector<int>>
 
 vector<int> manacher (string &s){   //manacher Algorithm O(n) to find the longest palindromic substring
       string t;
@@ -64,6 +66,64 @@ int setBit (int n, int bitpos){ //from 1 to n how many have "bitpos" set
     int y=max(0ll,(n%(1ll<<(bitpos+1ll)))-(1ll<<(bitpos))+1ll);
     x*=(1ll<<bitpos);
     return x+y;
+}
+
+vvi lcsubsequence( string &s,string &t){
+    int n=s.size();
+    int m=t.size();
+    vvi dp(n+1,vi(m+1,0));
+    //dp[i][j] denotes the longest common subsequence comsidering from 1 to ith character of s and considering from 1 to jth character of t
+    //transition : dp[i][j]=dp[i-1][j-1]+1 if s[i]==t[j] else dp[i][j]=max(dp[i-1][j],dp[i][j-1])
+    //base case : dp[0][j]=0 and dp[i][0]=0
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            if(s[i-1]==t[j-1]){
+                dp[i][j]=dp[i-1][j-1]+1;
+            }else{
+                dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+            }
+        }
+    }
+    return dp;
+}
+vvi lcsubstring(string &s, string &t){
+    int n=s.size();
+    int m=t.size();
+    vvi dp(n+1,vi(m+1,0));
+    //dp[i][j] denotes the longest common substring ending at ith character of s and jth character of t
+    //transition : dp[i][j]=dp[i-1][j-1]+1 if s[i]==t[j] else dp[i][j]=0
+    //base case : dp[0][j]=0 and dp[i][0]=0
+    int ans=0;
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            if(s[i-1]==t[j-1]){
+                dp[i][j]=dp[i-1][j-1]+1;
+            }else{
+                dp[i][j]=0;
+            }
+            ans=max(ans,dp[i][j]);
+        }
+    }
+    return dp;
+}
+vvi lsubstringsubsequence(string &s, string &t){//(longest substring in t which is a subsequence in a)
+        int n=s.size();
+        int m=t.size();
+        vvi dp(n+1,vi(m+1,0));
+        //we need to find the longest subsequence in p which is a substring in q
+          //let dp[i][j] ddenotes the answer ending at jth character of q and comsidering string from 1 to ith character of p
+          //transition : dp[i][j]=dp[i-1][j-1]+1 if p[i]==q[j] else dp[i][j]=dp[i-1][j]
+            //base case : dp[0][j]=0 and dp[i][0]=0 
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(s[i-1]==t[j-1]){
+                    dp[i][j]=dp[i-1][j-1]+1;
+                }else{
+                    dp[i][j]=dp[i-1][j];
+                }
+            }
+        }
+        return dp;
 }
 
 
