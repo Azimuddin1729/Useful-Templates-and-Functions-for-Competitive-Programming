@@ -127,3 +127,49 @@ vvi lsubstringsubsequence(string &s, string &t){//(longest substring in t which 
 }
 
 
+struct trie{
+    trie* child[26];
+    int cnt;
+    trie(){
+        for(int i=0;i<26;i++){
+            child[i]=NULL;
+        }
+        cnt=0;
+    }
+};
+void insert(trie* root, string &s){
+    trie* temp=root;
+    for(int i=0;i<s.size();i++){
+        int x=s[i]-'a';
+        if(temp->child[x]==NULL){
+            temp->child[x]=new trie();
+        }
+        temp=temp->child[x];
+        temp->cnt++;
+    }
+}
+int search(trie* root, string &s){
+    trie* temp=root;
+    for(int i=0;i<s.size();i++){
+        int x=s[i]-'a';
+        if(temp->child[x]==NULL){
+            return 0;
+        }
+        temp=temp->child[x];
+    }
+    return temp->cnt;
+}
+void erase(trie* root, string &s){
+    trie* temp=root;
+    for(int i=0;i<s.size();i++){
+        int x=s[i]-'a';
+        if(temp->child[x]==NULL){
+            return;
+        }
+        temp=temp->child[x];
+        temp->cnt--;
+    }
+}
+
+
+
