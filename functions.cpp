@@ -1,9 +1,14 @@
 #include<bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp> 
+#include <ext/pb_ds/tree_policy.hpp> 
+#include <ext/pb_ds/detail/standard_policies.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 #define int long long
 #define vi vector<int>
 #define vvi vector<vector<int>>
-
+typedef
+tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set; 
 vector<int> manacher (string &s){   //manacher Algorithm O(n) to find the longest palindromic substring
       string t;
       int x=s.size();
@@ -334,4 +339,18 @@ void modifieddijkstra(vvp &adj,vvi &dis,vvi &visit,int k){ //for two state trans
     }
     }
     return;
+}
+
+
+//inversions count using ordered set
+int inversions(vi &a){
+    int n=a.size();
+    ordered_set s;
+    int ans=0;
+    for(int i=0;i<n;i++){
+        s.insert(a[i]);
+       int x=s.order_of_key(a[i]);                //how many are greater than a[i] in the set
+       ans+=(i+1)-(x+1);
+    }
+    return ans;
 }
