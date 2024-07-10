@@ -354,3 +354,38 @@ int inversions(vi &a){
     }
     return ans;
 }
+
+int bitwiseOR(int L,int R){ //or of elements in range from L to R in O(1) upto LONG data types
+//10100101 ,10110101 -> 10111111 ANS
+    int res=0;
+    int msb1=0;
+    int msb2=0;
+    if(R==0){
+        return 0;
+    }
+    if(R>0){
+        if(L==0){
+            L=1;
+        } 
+    }
+    msb1=log2(L);
+    msb2=log2(R);
+    if(msb1==msb2){
+        res+=(1ll<<msb1);
+       for(int i=msb2-1;i>=0;i--){
+        if(((L&(1ll<<i))==(R&(1ll<<i)))&&(L&(1ll<<i))){
+            res+=(1ll<<i);
+        }
+        else{
+            if((R&(1ll<<i))&&((L&(1ll<<i))==0)){
+            res+=(1ll<<(i+1))-1;
+            break;
+            }
+        }
+       }
+    }
+    else{
+        res=(1ll<<(msb2+1))-1;
+    }
+    return res;
+}
