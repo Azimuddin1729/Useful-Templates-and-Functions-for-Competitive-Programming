@@ -389,3 +389,22 @@ int bitwiseOR(int L,int R){ //or of elements in range from L to R in O(1) upto L
     }
     return res;
 }
+
+//binary lifting for LCA
+vvi dp;
+vvi level;
+int n;
+int l;
+void dfs(int u,int p,int d){
+    dp[u][0]=p;
+    level[u][0]=d;
+    for(int i=1;i<=l;i++){
+        dp[u][i]=dp[dp[u][i-1]][i-1];
+        level[u][i]=level[dp[u][i-1]][i-1];
+    }
+    for(auto i:adj[u]){
+        if(i.first!=p){
+            dfs(i.first,u,d+1);
+        }
+    }
+}
